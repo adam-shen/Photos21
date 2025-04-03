@@ -1,23 +1,25 @@
+package model;
 
 import java.util.ArrayList;
 
 /**
  * Admin is a special class that handles user management functions such as
  * listing users, creating a new user, and deleting an existing user.
- * This class is not a subclass of User since it represents an administrative role.
+ * This class is not a subclass of User since it represents an administrative
+ * role.
  * 
  * @author YourName
  */
 public class Admin {
     private ArrayList<User> users;
-    
+
     /**
      * Constructs an Admin instance.
      */
     public Admin() {
         this.users = new ArrayList<>();
     }
-    
+
     /**
      * Returns a list of all users.
      *
@@ -30,7 +32,7 @@ public class Admin {
         }
         return users;
     }
-    
+
     /**
      * Adds a new user.
      *
@@ -45,7 +47,7 @@ public class Admin {
             System.out.println("User \"" + user.getUsername() + "\" already exists.");
         }
     }
-    
+
     /**
      * Deletes an existing user.
      *

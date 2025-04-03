@@ -1,3 +1,5 @@
+package model;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,10 +12,10 @@ import java.util.ArrayList;
  */
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     protected String username;
     protected ArrayList<Album> albums;
-    
+
     /**
      * Constructs a User with the specified username.
      *
@@ -23,7 +25,7 @@ public class User implements Serializable {
         this.username = username;
         this.albums = new ArrayList<>();
     }
-    
+
     /**
      * Adds an album to the user's album list.
      *
@@ -38,7 +40,7 @@ public class User implements Serializable {
             System.out.println("Album \"" + album.getName() + "\" already exists for user " + username + ".");
         }
     }
-    
+
     /**
      * Removes an album from the user's album list.
      *
@@ -51,7 +53,7 @@ public class User implements Serializable {
             System.out.println("Album \"" + album.getName() + "\" not found for user " + username + ".");
         }
     }
-    
+
     /**
      * Returns the list of albums owned by the user.
      *
@@ -60,7 +62,7 @@ public class User implements Serializable {
     public ArrayList<Album> getAlbums() {
         return albums;
     }
-    
+
     /**
      * Returns the username of the user.
      *

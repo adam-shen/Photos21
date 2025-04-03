@@ -1,3 +1,4 @@
+package model;
 
 /**
  * Moderator represents a user with extra privileges, such as moderating albums.
@@ -6,7 +7,7 @@
  * @author YourName
  */
 public class Moderator extends User {
-    
+
     /**
      * Constructs a Moderator with the specified username.
      *
@@ -15,7 +16,7 @@ public class Moderator extends User {
     public Moderator(String username) {
         super(username);
     }
-    
+
     /**
      * Moderates the specified album.
      * (Insert moderation logic as required by your application.)
@@ -25,6 +26,7 @@ public class Moderator extends User {
     public void moderateAlbum(Album album) {
         // Example implementation: simply print out a moderation message.
         System.out.println("Moderator " + username + " is moderating album: " + album.getName());
-        // Additional moderation logic (e.g., reviewing photos, flagging content) can be implemented here.
+        // Additional moderation logic (e.g., reviewing photos, flagging content) can be
+        // implemented here.
     }
 }

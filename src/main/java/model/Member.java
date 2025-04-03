@@ -1,3 +1,4 @@
+package model;
 
 /**
  * Member represents a regular user of the application.
@@ -8,7 +9,7 @@
  * @author YourName
  */
 public class Member extends User {
-    
+
     /**
      * Constructs a Member with the specified username.
      *

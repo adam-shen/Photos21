@@ -1,4 +1,4 @@
-package com.photos.model;
+package model;
 
 import java.util.Objects;
 
