@@ -1,11 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Photo {
+public class Photo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final String filepath;
     private String caption;
