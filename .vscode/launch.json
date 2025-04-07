@@ -3,16 +3,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "App",
-            "request": "launch",
-            "mainClass": "com.photos/com.photos.App",
-            "projectName": ""
-        },
-        {
-            "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "com.photos.App",
+            "mainClass": "photos.App",
+            "projectName": "photos21",
             "vmArgs": "--module-path C:/Users/dappe/OneDrive/Desktop/javafx-sdk-21.0.6/lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
