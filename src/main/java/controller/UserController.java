@@ -1,20 +1,136 @@
 package controller;
 
+import java.io.IOException;
+import java.util.Optional;
+
+import app.App;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
+import model.Album;
+import model.User;
 
 public class UserController {
 
     @FXML
+    private TableView<Album> albumTableView;
+
+    @FXML
     private void initialize() {
-        // Code to initialize user view (e.g., loading the user’s albums) goes here.
+        // Logic to initialize the user view
+        User currentUser = getCurrentUser();
+        System.out.println("Initializing user view for: " + currentUser.getUsername());
+
+        // Load the user's albums into the TableView
+        if (albumTableView != null && currentUser.getAlbums() != null) {
+            albumTableView.getItems().addAll(currentUser.getAlbums());
+        }
     }
 
     @FXML
     private void handleLogout() {
-        // Logic to logout the user
-        showInfo("Logout functionality is not implemented yet.");
-        // Example: App.setRoot("login");
+        try {
+            App.setRoot("login"); // Redirect to the login screen
+        } catch (IOException e) {
+            showError("Failed to load the login screen.");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleQuit() {
+        // Save any pending changes before exiting
+        saveUserData();
+        Platform.exit();
+    }
+
+    @FXML
+    private void handleAddAlbum() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Add Album");
+        dialog.setHeaderText("Create a new album");
+        dialog.setContentText("Enter album name:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent() && !result.get().trim().isEmpty()) {
+            String albumName = result.get().trim();
+
+            User currentUser = getCurrentUser();
+            Album newAlbum = new Album(albumName);
+            currentUser.addAlbum(newAlbum);
+
+            // Update the table view if it exists
+            if (albumTableView != null) {
+                albumTableView.getItems().add(newAlbum);
+            }
+
+            showInfo("Album '" + albumName + "' created successfully.");
+        }
+    }
+
+    @FXML
+    private void handleDeleteAlbum() {
+        Album selectedAlbum = albumTableView.getSelectionModel().getSelectedItem();
+        if (selectedAlbum == null) {
+            showError("Please select an album to delete.");
+            return;
+        }
+
+        User currentUser = getCurrentUser();
+        currentUser.removeAlbum(selectedAlbum);
+
+        // Update the TableView
+        albumTableView.getItems().remove(selectedAlbum);
+
+        showInfo("Album '" + selectedAlbum.getName() + "' deleted successfully.");
+    }
+
+    @FXML
+    private void handleRenameAlbum() {
+        Album selectedAlbum = albumTableView.getSelectionModel().getSelectedItem();
+        if (selectedAlbum == null) {
+            showError("Please select an album to rename.");
+            return;
+        }
+
+        TextInputDialog dialog = new TextInputDialog(selectedAlbum.getName());
+        dialog.setTitle("Rename Album");
+        dialog.setHeaderText("Rename the selected album");
+        dialog.setContentText("Enter new album name:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent() && !result.get().trim().isEmpty()) {
+            String newName = result.get().trim();
+            selectedAlbum.renameAlbum(newName);
+
+            // Update the TableView
+            albumTableView.refresh();
+
+            showInfo("Album renamed to '" + newName + "' successfully.");
+        }
+    }
+
+    // Utility methods for UserController
+    private User getCurrentUser() {
+        // In a real implementation, this would get the logged-in user from a session
+        // manager
+        return new User("exampleUser");
+    }
+
+    private void saveUserData() {
+        // Logic to save user data to disk
+        // This would use SerializationUtil in a real implementation
+        System.out.println("Saving user data");
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void showInfo(String message) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AdminController">
+    <!-- Top ToolBar with buttons -->
+    <top>
+        <ToolBar>
+            <Button text="Create User" onAction="#handleCreateUser" />
+            <Button text="Delete User" onAction="#handleDeleteUser" />
+            <Button text="List Users" onAction="#handleListUsers" />
+            <Button text="Logout" onAction="#handleLogout" />
+        </ToolBar>
+    </top>
+    
+    <!-- Center ListView for displaying users -->
+    <center>
+        <ListView fx:id="userListView" />
+    </center>
+    
+    <!-- Optional: padding around the layout -->
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+</BorderPane>

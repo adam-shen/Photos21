@@ -17,9 +17,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // Load primary.fxml from the /photos/ folder in resources
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        // Load login.fxml first
+        scene = new Scene(loadFXML("login"), 640, 480);
         stage.setScene(scene);
+        stage.setTitle("Photos - Login");
         stage.show();
     }
 
@@ -28,14 +29,9 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-try{ FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/resources/photos/" + fxml + ".fxml"));
-        return fxmlLoader.load();
-        }
-        catch(Exepection e){
 
-        system.out.println("File not found! " + e);
-        }
-       
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/" + fxml + ".fxml"));
+        return fxmlLoader.load();
     }
 
     public static void main(String[] args) {
