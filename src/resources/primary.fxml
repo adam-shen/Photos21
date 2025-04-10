@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="your.package.PrimaryScreenController">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
     <!-- Top section: Menu and header label -->
     <top>
         <VBox>
             <MenuBar>
                 <Menu text="File">
-                    <MenuItem fx:id="logoutMenuItem" text="Logout"/>
-                    <MenuItem fx:id="quitMenuItem" text="Quit"/>
+                    <MenuItem fx:id="logoutMenuItem" text="Logout" onAction="#handleLogout"/>
+                    <MenuItem fx:id="quitMenuItem" text="Quit" onAction="#handleQuit"/>
                 </Menu>
             </MenuBar>
             <Label text="Photo Album Application" style="-fx-font-size: 24px; -fx-padding: 10px;"/>
@@ -36,4 +36,12 @@
         </TableView>
     </center>
     
-    <!--
+    <!-- Bottom section: Buttons for album actions -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10px;">
+            <Button fx:id="addAlbumButton" text="Add Album" onAction="#handleAddAlbum"/>
+            <Button fx:id="deleteAlbumButton" text="Delete Album" onAction="#handleDeleteAlbum"/>
+            <Button fx:id="renameAlbumButton" text="Rename Album" onAction="#handleRenameAlbum"/>
+        </HBox>
+    </bottom>
+</BorderPane>
