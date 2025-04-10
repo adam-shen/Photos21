@@ -32,14 +32,6 @@ public class App extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/" + fxml + ".fxml"));
         return fxmlLoader.load();
-    }catch(
-
-    Exepection e)
-    {
-
-        system.out.println("File not found! " + e);
-    }
-
     }
 
     public static void main(String[] args) {
