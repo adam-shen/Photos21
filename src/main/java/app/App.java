@@ -28,9 +28,14 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/resources/" + fxml + ".fxml"));
+try{ FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/resources/photos/" + fxml + ".fxml"));
         return fxmlLoader.load();
+        }
+        catch(Exepection e){
+
+        system.out.println("File not found! " + e);
+        }
+       
     }
 
     public static void main(String[] args) {
