@@ -42,6 +42,8 @@
             <Button fx:id="addAlbumButton" text="Add Album" onAction="#handleAddAlbum"/>
             <Button fx:id="deleteAlbumButton" text="Delete Album" onAction="#handleDeleteAlbum"/>
             <Button fx:id="renameAlbumButton" text="Rename Album" onAction="#handleRenameAlbum"/>
+            <!-- New Open Album button -->
+            <Button fx:id="openAlbumButton" text="Open Album" onAction="#handleOpenAlbum"/>
         </HBox>
     </bottom>
 </BorderPane>
