@@ -31,6 +31,7 @@ public class UserController {
 
     @FXML
     private void handleLogout() {
+        saveUserData();
         try {
             App.setRoot("login"); // Redirect to the login screen
         } catch (IOException e) {
@@ -44,6 +45,26 @@ public class UserController {
         // Save any pending changes before exiting
         saveUserData();
         Platform.exit();
+    }
+
+    @FXML
+    private void handleOpenAlbum() {
+        Album selectedAlbum = albumTableView.getSelectionModel().getSelectedItem();
+        if (selectedAlbum == null) {
+            showError("Please select an album to open.");
+            return;
+        }
+
+        // Set the current album for later retrieval
+        SessionManager.setCurrentAlbum(selectedAlbum);
+
+        try {
+            // Switch to the album details view (album_details.fxml)
+            App.setRoot("album_details");
+        } catch (IOException e) {
+            showError("Failed to load the album details view.");
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -66,6 +87,8 @@ public class UserController {
                 albumTableView.getItems().add(newAlbum);
             }
 
+            albumTableView.refresh();
+            saveUserData();
             showInfo("Album '" + albumName + "' created successfully.");
         }
     }
@@ -114,9 +137,7 @@ public class UserController {
 
     // Utility methods for UserController
     private User getCurrentUser() {
-        // In a real implementation, this would get the logged-in user from a session
-        // manager
-        return new User("exampleUser");
+        return SessionManager.getCurrentUser();
     }
 
     private void saveUserData() {

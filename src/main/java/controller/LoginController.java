@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import model.Album;
 import model.User;
 import util.SerializationUtil;
 
@@ -87,6 +88,7 @@ public class LoginController {
 // A simple session management class to track the current user
 class SessionManager {
     private static User currentUser;
+    private static Album currentAlbum;
 
     public static void setCurrentUser(User user) {
         currentUser = user;
@@ -94,5 +96,13 @@ class SessionManager {
 
     public static User getCurrentUser() {
         return currentUser;
+    }
+
+    public static void setCurrentAlbum(Album album) {
+        currentAlbum = album;
+    }
+
+    public static Album getCurrentAlbum() {
+        return currentAlbum;
     }
 }

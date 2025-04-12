@@ -262,7 +262,7 @@ public class PhotoController {
         setSelectedPhoto(currentAlbum.getPhotos().get(previousIndex));
     }
 
-    private void setSelectedPhoto(Photo photo) {
+    public void setSelectedPhoto(Photo photo) {
         this.selectedPhoto = photo;
 
         if (photo != null) {
