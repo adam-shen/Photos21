@@ -74,6 +74,12 @@ public class LoginController {
                 e.printStackTrace();
             }
         }
+
+        File dataDir = new File("data/users");
+if (!dataDir.exists()) {
+    dataDir.mkdirs();
+}
+
     }
 
     private void showError(String message) {
