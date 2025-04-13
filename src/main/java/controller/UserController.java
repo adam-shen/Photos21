@@ -7,21 +7,34 @@ import app.App;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.Album;
 import model.User;
+import util.SerializationUtil;
 
 public class UserController {
 
     @FXML
     private TableView<Album> albumTableView;
+    @FXML
+    private TableColumn<Album, String> albumNameColumn;
+    @FXML
+    private TableColumn<Album, Integer> photoCountColumn;
+    @FXML
+    private TableColumn<Album, String> dateRangeColumn;
 
     @FXML
     private void initialize() {
-        // Logic to initialize the user view
         User currentUser = getCurrentUser();
         System.out.println("Initializing user view for: " + currentUser.getUsername());
+
+        // Configure the TableColumn cell value factories
+        albumNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        photoCountColumn.setCellValueFactory(new PropertyValueFactory<>("photoCount"));
+        dateRangeColumn.setCellValueFactory(new PropertyValueFactory<>("dateRange"));
 
         // Load the user's albums into the TableView
         if (albumTableView != null && currentUser.getAlbums() != null) {
@@ -143,7 +156,8 @@ public class UserController {
     private void saveUserData() {
         // Logic to save user data to disk
         // This would use SerializationUtil in a real implementation
-       SerializableUtil.save(SessionManager.getCurrentUser(), "data/users/" + SessionManager.getCurrentUser().getUsername() + ".dat");
+        SerializationUtil.save(SessionManager.getCurrentUser(),
+                "data/users/" + SessionManager.getCurrentUser().getUsername() + ".dat");
     }
 
     private void showError(String message) {

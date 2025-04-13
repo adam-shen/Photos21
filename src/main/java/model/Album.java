@@ -40,6 +40,10 @@ public class Album implements Serializable {
         return photos;
     }
 
+    public int getPhotoCount() {
+        return photos.size();
+    }
+
     public String getDateRange() {
 
         if (photos.isEmpty()) {
@@ -61,7 +65,7 @@ public class Album implements Serializable {
         return "From " + earliest.toString() + " to " + latest.toString();
     }
 
-    public String toString(){
+    public String toString() {
         return name;
     }
 

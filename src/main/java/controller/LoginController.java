@@ -77,15 +77,9 @@ public class LoginController {
         }
 
         File dataDir = new File("data/users");
-<<<<<<< Updated upstream
-      if (!dataDir.exists()) {
-    dataDir.mkdirs();
-} 
-=======
         if (!dataDir.exists()) {
             dataDir.mkdirs();
         }
->>>>>>> Stashed changes
 
     }
 
