@@ -76,9 +76,9 @@ public class LoginController {
         }
 
         File dataDir = new File("data/users");
-if (!dataDir.exists()) {
+      if (!dataDir.exists()) {
     dataDir.mkdirs();
-}
+} 
 
     }
 
