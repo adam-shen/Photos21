@@ -325,6 +325,7 @@ public class AlbumController {
     private void saveUserData() {
         if (currentUser != null) {
             SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
+            //.
         }
     }
 

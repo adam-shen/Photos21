@@ -61,4 +61,8 @@ public class Album implements Serializable {
         return "From " + earliest.toString() + " to " + latest.toString();
     }
 
+    public String toString(){
+        return name;
+    }
+
 }

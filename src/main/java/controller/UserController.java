@@ -143,7 +143,7 @@ public class UserController {
     private void saveUserData() {
         // Logic to save user data to disk
         // This would use SerializationUtil in a real implementation
-        System.out.println("Saving user data");
+       SerializableUtil.save(SessionManager.getCurrentUser(), "data/users/" + SessionManager.getCurrentUser().getUsername() + ".dat");
     }
 
     private void showError(String message) {
