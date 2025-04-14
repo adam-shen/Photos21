@@ -14,13 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.SearchController">
-    <!-- Optional album selection at the top -->
     <top>
-        <HBox spacing="10" alignment="CENTER" BorderPane.alignment="CENTER">
-            <Label text="Select Album (optional):" />
-            <ComboBox fx:id="albumComboBox" prefWidth="150" />
-        </HBox>
-    </top>
+    <HBox spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER_LEFT">
+        <Button text="Back" onAction="#handleBack"/>
+        <Label text="Select Album:" />
+        <ComboBox fx:id="albumComboBox" prefWidth="150" />
+    </HBox>
+</top>
+
     
     <!-- Center: Tabbed pane with Date Range and Tag searches -->
     <center>
@@ -55,12 +56,15 @@
         </TabPane>
     </center>
     
-    <!-- Bottom: Display Search Results and Create Album Button -->
+    <!-- Bottom: Display Search Results and Create Album Button with Back Button -->
     <bottom>
         <VBox spacing="10" alignment="CENTER" BorderPane.alignment="CENTER">
             <Label text="Search Results:"/>
             <ListView fx:id="searchResultsListView" prefWidth="400" prefHeight="200"/>
-            <Button text="Create Album from Search Results" onAction="#handleCreateAlbumFromSearchResults"/>
+            <HBox spacing="10">
+                <Button text="Create Album from Search Results" onAction="#handleCreateAlbumFromSearchResults"/>
+              
+            </HBox>
         </VBox>
     </bottom>
 </BorderPane>

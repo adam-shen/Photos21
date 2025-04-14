@@ -28,6 +28,7 @@ import model.Album;
 import model.Photo;
 import model.Tag;
 import model.User;
+import util.SerializationUtil;
 
 public class PhotoController {
 
@@ -96,7 +97,7 @@ public class PhotoController {
     @FXML
     public void handleBack(ActionEvent event) {
         try {
-            App.setRoot("album_details");
+            App.setRoot("album_details"); // Redirect to the album details view
         } catch (IOException e) {
             e.printStackTrace();
             showError("Failed to return to album details view.");
@@ -163,56 +164,64 @@ public class PhotoController {
     }
 
     @FXML
-    private void handleAddTag() {
-        if (selectedPhoto == null) {
-            showError("No photo selected.");
-            return;
-        }
-        // Retrieve tag type from tagTypeComboBox instead of manual text input.
-        String tagType = tagTypeComboBox.getValue();
-        String tagValue = tagValueField.getText().trim();
-
-        if (tagType == null || tagType.isEmpty()) {
-            showError("Please select a tag type.");
-            return;
-        }
-        if (tagValue.isEmpty()) {
-            showError("Tag value cannot be empty.");
-            return;
-        }
-
-        // Add tag type to known list to persist it in session.
-        knownTagTypes.add(tagType);
-        refreshTagTypeComboBox();
-
-        Tag newTag = new Tag(tagType, tagValue);
-        selectedPhoto.addTag(newTag);
-
-        refreshTagList();
-        tagValueField.clear();
-        showInfo("Tag added: " + tagType + "=" + tagValue);
+   
+private void handleAddTag() {
+    if (selectedPhoto == null) {
+        showError("No photo selected.");
+        return;
     }
+    String tagType = tagTypeComboBox.getValue();
+    String tagValue = tagValueField.getText().trim();
+
+    if (tagType == null || tagType.isEmpty()) {
+        showError("Please select a tag type.");
+        return;
+    }
+    if (tagValue.isEmpty()) {
+        showError("Tag value cannot be empty.");
+        return;
+    }
+
+    // Persist the new tag type in your session's set of known types.
+    knownTagTypes.add(tagType);
+    refreshTagTypeComboBox();
+
+    Tag newTag = new Tag(tagType, tagValue);
+    selectedPhoto.addTag(newTag);
+
+    refreshTagList();
+    tagValueField.clear();
+    showInfo("Tag added: " + tagType + "=" + tagValue);
+    
+    // Save the updated user object so that tag changes are persisted.
+    SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
+}
+
 
     @FXML
-    private void handleDeleteTag() {
-        if (selectedPhoto == null) {
-            showError("No photo selected.");
-            return;
-        }
-        String selectedTag = tagListView.getSelectionModel().getSelectedItem();
-        if (selectedTag == null) {
-            showError("No tag selected.");
-            return;
-        }
-        // Expected format: "name=value"
-        String[] parts = selectedTag.split("=");
-        if (parts.length == 2) {
-            Tag tagToRemove = new Tag(parts[0].trim(), parts[1].trim());
-            selectedPhoto.removeTag(tagToRemove);
-            refreshTagList();
-            showInfo("Tag removed: " + selectedTag);
-        }
+private void handleDeleteTag() {
+    if (selectedPhoto == null) {
+        showError("No photo selected.");
+        return;
     }
+    String selectedTag = tagListView.getSelectionModel().getSelectedItem();
+    if (selectedTag == null) {
+        showError("No tag selected.");
+        return;
+    }
+    // Expected format: "name=value"
+    String[] parts = selectedTag.split("=");
+    if (parts.length == 2) {
+        Tag tagToRemove = new Tag(parts[0].trim(), parts[1].trim());
+        selectedPhoto.removeTag(tagToRemove);
+        refreshTagList();
+        showInfo("Tag removed: " + selectedTag);
+        
+        // Save the updated user object so that removal is persisted.
+        SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
+    }
+}
+
 
     @FXML
     private void handleDefineNewTagType() {

@@ -16,7 +16,7 @@
     <!-- Top: Back button and photo caption -->
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10px;">
-            <Button text="Back" onAction="#handleBack" />
+            <Button text="Back" onAction="#handleBack"/>
             <!-- Editable caption field -->
             <TextField fx:id="photoCaptionField"
                        promptText="Photo Caption"

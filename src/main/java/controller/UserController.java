@@ -175,4 +175,14 @@ public class UserController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+private void openSearchView() {
+    try {
+        App.setRoot("search_view");
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
 }

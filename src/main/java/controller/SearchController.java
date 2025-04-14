@@ -1,11 +1,13 @@
 package controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -32,7 +34,6 @@ public class SearchController {
     @FXML
     private ListView<Photo> searchResultsListView;
 
-    // In case you want the user to select the album to search in via a ComboBox:
     @FXML
     private ComboBox<String> albumComboBox;
     
@@ -43,11 +44,35 @@ public class SearchController {
 
     @FXML
     private void initialize() {
+        System.out.println("SearchController initialized!");
         currentUser = SessionManager.getCurrentUser();
         albumComboBox.getItems().clear();
         for (Album album : currentUser.getAlbums()) {
             albumComboBox.getItems().add(album.getName());
         }
+        // Set a custom cell factory (if desired) for displaying image thumbnails, etc.
+        searchResultsListView.setCellFactory(listView -> new javafx.scene.control.ListCell<Photo>() {
+            private javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView();
+            
+            @Override
+            protected void updateItem(Photo photo, boolean empty) {
+                super.updateItem(photo, empty);
+                if (empty || photo == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(photo.getCaption());
+                    try {
+                        javafx.scene.image.Image thumbnail = new javafx.scene.image.Image("file:" + photo.getFilepath(), 
+                                                  60, 60, true, true);
+                        imageView.setImage(thumbnail);
+                        setGraphic(imageView);
+                    } catch (Exception e) {
+                        setGraphic(null);
+                    }
+                }
+            }
+        });
     }
 
     @FXML
@@ -58,7 +83,6 @@ public class SearchController {
         }
         LocalDate startDate = startDatePicker.getValue();
         LocalDate endDate = endDatePicker.getValue();
-        // Convert dates to LocalDateTime (start of day & end of day)
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 
@@ -96,7 +120,6 @@ public class SearchController {
         }
         searchResults.clear();
         
-        // Simple parser that supports at most two conditions with AND/OR
         String operator = null;
         String[] parts = null;
         if (query.contains(" AND ")) {
@@ -123,7 +146,6 @@ public class SearchController {
         
         List<Photo> photosToSearch = new ArrayList<>();
         if (albumComboBox.getValue() != null) {
-            // Search only in the selected album:
             for (Album album : currentUser.getAlbums()) {
                 if (album.getName().equals(albumComboBox.getValue())) {
                     photosToSearch.addAll(album.getPhotos());
@@ -131,7 +153,6 @@ public class SearchController {
                 }
             }
         } else {
-            // Otherwise, search across all albums
             for (Album album : currentUser.getAlbums()) {
                 photosToSearch.addAll(album.getPhotos());
             }
@@ -140,7 +161,6 @@ public class SearchController {
         for (Photo photo : photosToSearch) {
             boolean matches = false;
             if (operator == null) {
-                // Single condition
                 matches = photo.getTags().contains(tagConditions.get(0));
             } else if (operator.equals("AND")) {
                 matches = photo.getTags().containsAll(tagConditions);
@@ -175,19 +195,23 @@ public class SearchController {
             showError("No photos in search results to create an album.");
             return;
         }
-        
-        // Normally, prompt the user for an album name (e.g., using TextInputDialog)
-        // For simplicity, we'll use a fixed album name or you can integrate a dialog here.
         String newAlbumName = "Search Results Album";
         Album newAlbum = new Album(newAlbumName);
-        // Copy the photo references into the new album (no duplication of the actual photo data)
         for (Photo photo : searchResults) {
             newAlbum.addPhoto(photo);
         }
         currentUser.addAlbum(newAlbum);
         showInfo("New album '" + newAlbumName + "' created with " + searchResults.size() + " photos.");
-        
-        //SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
+    }
+
+    @FXML
+    private void handleBack() {
+        try {
+            App.setRoot("primary");  // Change "primary" if your main album view is named differently
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Unable to return to the main album list.");
+        }
     }
 
     private void showError(String message) {
