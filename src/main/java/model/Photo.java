@@ -9,7 +9,7 @@ import java.util.Set;
 public class Photo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final String filepath;
+    private String filepath;
     private String caption;
     private final LocalDateTime dateTaken;
     private Set<Tag> tags;
@@ -39,11 +39,11 @@ public class Photo implements Serializable {
     }
 
     public String getFilepath() {
-        return this.filepath;
+        return filepath;
     }
 
     public String getCaption() {
-        return this.caption;
+        return caption;
     }
 
     public void setCaption(String caption) {
@@ -69,6 +69,11 @@ public class Photo implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(filepath, caption, dateTaken, tags);
+    }
+
+    @Override
+    public String toString() {
+        return (caption == null || caption.isEmpty()) ? "Photo: " + filepath : caption;
     }
 
 }

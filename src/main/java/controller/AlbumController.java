@@ -15,6 +15,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Album;
@@ -42,17 +46,21 @@ public class AlbumController {
     @FXML
     private TextField secondTagValueField;
 
-    // Fields for album details mode (photo listing)
+    // Fields for album details mode (photo grid display)
     @FXML
     private Label albumNameLabel; // Present in album_details.fxml
     @FXML
-    private ListView<Photo> photoListView; // Present in album_details.fxml
+    private TilePane photoTilePane; // New: used for grid display of photos
 
     private User currentUser;
+    // We'll track the selected photo.
+    private Photo selectedPhoto;
+    // This will reference the StackPane wrapping the current selected thumbnail.
+    private StackPane selectedThumbnailContainer;
 
     @FXML
     private void initialize() {
-        // Determine mode by checking which key FXML fields are present.
+        // Determine mode by checking which FXML components are present.
         if (albumListView != null) {
             // Primary dashboard mode.
             currentUser = SessionManager.getCurrentUser();
@@ -64,8 +72,8 @@ public class AlbumController {
             Album currentAlbum = SessionManager.getCurrentAlbum();
             if (currentAlbum != null) {
                 albumNameLabel.setText(currentAlbum.getName());
-                if (photoListView != null) {
-                    refreshPhotoList();
+                if (photoTilePane != null) {
+                    refreshPhotoGrid();
                 }
             } else {
                 albumNameLabel.setText("No album selected");
@@ -160,7 +168,7 @@ public class AlbumController {
         }
     }
 
-    // --- Photo Operations (for album_details.fxml) ---
+    // --- Photo Operations (for album_details.fxml using the photoTilePane) ---
     @FXML
     private void handleAddPhoto() {
         Album currentAlbum = SessionManager.getCurrentAlbum();
@@ -177,7 +185,7 @@ public class AlbumController {
             LocalDateTime dateTaken = LocalDateTime.now();
             Photo newPhoto = new Photo(selectedFile.getAbsolutePath(), "", dateTaken);
             currentAlbum.addPhoto(newPhoto);
-            refreshPhotoList();
+            refreshPhotoGrid();
             saveUserData();
             showInfo("Photo added successfully.");
         }
@@ -185,9 +193,6 @@ public class AlbumController {
 
     @FXML
     private void handleDeletePhoto() {
-        if (photoListView == null)
-            return;
-        Photo selectedPhoto = photoListView.getSelectionModel().getSelectedItem();
         if (selectedPhoto == null) {
             showError("Please select a photo to delete.");
             return;
@@ -195,7 +200,9 @@ public class AlbumController {
         Album currentAlbum = SessionManager.getCurrentAlbum();
         if (currentAlbum != null) {
             currentAlbum.deletePhoto(selectedPhoto);
-            refreshPhotoList();
+            selectedPhoto = null; // reset selection
+            selectedThumbnailContainer = null;
+            refreshPhotoGrid();
             saveUserData();
             showInfo("Photo deleted successfully.");
         }
@@ -203,9 +210,6 @@ public class AlbumController {
 
     @FXML
     private void handleCopyPhoto() {
-        if (photoListView == null)
-            return;
-        Photo selectedPhoto = photoListView.getSelectionModel().getSelectedItem();
         if (selectedPhoto == null) {
             showError("Please select a photo to copy.");
             return;
@@ -236,9 +240,6 @@ public class AlbumController {
 
     @FXML
     private void handleMovePhoto() {
-        if (photoListView == null)
-            return;
-        Photo selectedPhoto = photoListView.getSelectionModel().getSelectedItem();
         if (selectedPhoto == null) {
             showError("Please select a photo to move.");
             return;
@@ -264,7 +265,9 @@ public class AlbumController {
             Album currentAlbum = SessionManager.getCurrentAlbum();
             currentAlbum.deletePhoto(selectedPhoto);
             destinationAlbum.addPhoto(selectedPhoto);
-            refreshPhotoList();
+            selectedPhoto = null;
+            selectedThumbnailContainer = null;
+            refreshPhotoGrid();
             saveUserData();
             showInfo("Photo moved to album '" + destAlbumName + "'.");
         }
@@ -272,11 +275,6 @@ public class AlbumController {
 
     @FXML
     private void handleOpenPhoto() {
-        if (photoListView == null) {
-            showError("Photo view not available.");
-            return;
-        }
-        Photo selectedPhoto = photoListView.getSelectionModel().getSelectedItem();
         if (selectedPhoto == null) {
             showError("Please select a photo to open.");
             return;
@@ -315,17 +313,56 @@ public class AlbumController {
         }
     }
 
-    private void refreshPhotoList() {
-        if (photoListView != null && SessionManager.getCurrentAlbum() != null) {
-            photoListView.getItems().clear();
-            photoListView.getItems().addAll(SessionManager.getCurrentAlbum().getPhotos());
+    // Populates the photoTilePane as a grid of thumbnails.
+    private void refreshPhotoGrid() {
+        if (photoTilePane != null && SessionManager.getCurrentAlbum() != null) {
+            photoTilePane.getChildren().clear();
+            for (Photo photo : SessionManager.getCurrentAlbum().getPhotos()) {
+                // Use the new createThumbnail method.
+                StackPane thumbnailContainer = createThumbnail(photo);
+                photoTilePane.getChildren().add(thumbnailContainer);
+            }
         }
+    }
+
+    // Helper method to create a thumbnail container (StackPane wrapping an
+    // ImageView)
+    // that supports selection highlighting.
+    private StackPane createThumbnail(Photo photo) {
+        double thumbnailWidth = 150;
+        double thumbnailHeight = 150;
+        Image image = new Image("file:" + photo.getFilepath(), thumbnailWidth, thumbnailHeight, true, true);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(thumbnailWidth);
+        imageView.setFitHeight(thumbnailHeight);
+
+        // Wrap the ImageView in a StackPane.
+        StackPane container = new StackPane(imageView);
+        // Default style: no border.
+        container.setStyle("-fx-border-color: transparent; -fx-padding: 2;");
+
+        // Handle mouse clicks on the thumbnail.
+        container.setOnMouseClicked(e -> {
+            // Clear any previous selection highlight.
+            if (selectedThumbnailContainer != null) {
+                selectedThumbnailContainer.setStyle("-fx-border-color: transparent; -fx-padding: 2;");
+            }
+            // Set the new selection.
+            selectedPhoto = photo;
+            selectedThumbnailContainer = container;
+            // Apply highlight style.
+            container.setStyle("-fx-border-color: blue; -fx-border-width: 3px; -fx-padding: 2;");
+            // If double-clicked, open the photo.
+            if (e.getClickCount() == 2) {
+                handleOpenPhoto();
+            }
+        });
+        return container;
     }
 
     private void saveUserData() {
         if (currentUser != null) {
             SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
-            //.
         }
     }
 

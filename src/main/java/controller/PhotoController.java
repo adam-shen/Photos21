@@ -5,6 +5,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+import app.App;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -55,10 +57,25 @@ public class PhotoController {
     public void setCurrentAlbum(Album album) {
         this.currentAlbum = album;
 
-        // Populate the album combo box with all albums from the user
+        // If currentUser is still null, initialize it.
+        if (this.currentUser == null) {
+            this.currentUser = SessionManager.getCurrentUser();
+        }
+
+        // Populate the album combo box with all albums from the user.
         albumComboBox.getItems().clear();
         for (Album userAlbum : currentUser.getAlbums()) {
             albumComboBox.getItems().add(userAlbum.getName());
+        }
+    }
+
+    @FXML
+    public void handleBack(ActionEvent event) {
+        try {
+            // Navigate back to the previous view
+            App.setRoot("album_details");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
