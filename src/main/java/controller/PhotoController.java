@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.File;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -36,12 +38,15 @@ public class PhotoController {
     @FXML
     private TextField tagValueField;
 
+    @FXML
+    private ListView<Photo> photoListView;
+
     private Album currentAlbum;
     private Photo selectedPhoto;
     private User currentUser;
 
     @FXML
-    private void initialize() {
+    private void initialize(URL url, ResourceBundle rb) {
         // This would be called after the album is opened
         // and currentAlbum is set
         currentUser = SessionManager.getCurrentUser();
