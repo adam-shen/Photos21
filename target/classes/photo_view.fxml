@@ -11,37 +11,61 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.PhotoController">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.PhotoController">
     <!-- Top: Back button and photo caption -->
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10px;">
-            <Button text="Back" onAction="#handleBack"/>
-            <!-- Using a TextField to display the caption -->
-            <TextField fx:id="photoCaptionField" text="Photo Caption" style="-fx-font-size: 18px;" editable="false"/>
+            <Button text="Back" onAction="#handleBack" />
+            <!-- Editable caption field -->
+            <TextField fx:id="photoCaptionField"
+                       promptText="Photo Caption"
+                       style="-fx-font-size: 16px;"
+                       editable="true" />
+            <!-- Button to save caption to Photo object -->
+            <Button text="Save Caption" onAction="#handleSaveCaption" />
         </HBox>
     </top>
-    
+
     <!-- Center: Image display -->
     <center>
-        <ImageView fx:id="photoImageView" preserveRatio="true" fitWidth="600" fitHeight="400"/>
+        <ImageView fx:id="photoImageView"
+                   preserveRatio="true"
+                   fitWidth="600"
+                   fitHeight="400" />
     </center>
-    
-    <!-- Bottom: Navigation and photo details -->
+
+    <!-- Bottom: Tag controls and date label -->
     <bottom>
         <VBox spacing="10" alignment="CENTER" style="-fx-padding: 10px;">
-            <HBox spacing="20" alignment="CENTER">
-                <Button text="Previous" onAction="#handlePreviousPhoto"/>
-                <Button text="Next" onAction="#handleNextPhoto"/>
+            <!-- Date display -->
+            <Label fx:id="photoDateLabel" text="Date Taken:" style="-fx-font-size: 14px;" />
+
+            <!-- Tag list -->
+            <Label text="Current Tags:" style="-fx-font-size: 14px;" />
+            <ListView fx:id="tagListView" prefHeight="100" prefWidth="300" />
+
+            <!-- Tag type and value input -->
+            <HBox spacing="10" alignment="CENTER">
+                <ComboBox fx:id="tagTypeComboBox" promptText="Tag Type" prefWidth="150" />
+                <TextField fx:id="tagValueField" promptText="Tag Value" prefWidth="150" />
+                <Button text="Add Tag" onAction="#handleAddTag" />
+                <Button text="Delete Tag" onAction="#handleDeleteTag" />
             </HBox>
-            <!-- Display date -->
-            <Label fx:id="photoDateLabel" text="Date Taken:"/>
-            <!-- New: ListView for tags -->
-            <Label text="Tags:"/>
-            <ListView fx:id="tagListView" prefHeight="100" prefWidth="300"/>
-            <!-- Optional: ComboBox for selecting a target album (if you use it) -->
+
+            <!-- Button to define a new tag type -->
+            <Button text="Define New Tag Type" onAction="#handleDefineNewTagType" />
+
+            <!-- Optional album selection for copy/move if you wish -->
             <HBox spacing="10" alignment="CENTER">
                 <Label text="Select Album:"/>
-                <ComboBox fx:id="albumComboBox" prefWidth="200"/>
+                <ComboBox fx:id="albumComboBox" promptText="Destination" prefWidth="150"/>
+            </HBox>
+
+            <!-- Navigation for next/previous photo -->
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="Previous" onAction="#handlePreviousPhoto" />
+                <Button text="Next" onAction="#handleNextPhoto" />
             </HBox>
         </VBox>
     </bottom>
