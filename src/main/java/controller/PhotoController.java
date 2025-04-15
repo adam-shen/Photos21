@@ -224,21 +224,24 @@ private void handleDeleteTag() {
 
 
     @FXML
-    private void handleDefineNewTagType() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Define New Tag Type");
-        dialog.setHeaderText("Add a new tag type");
-        dialog.setContentText("Enter new tag type:");
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            String newTagType = result.get().trim();
-            if (!newTagType.isEmpty()) {
-                knownTagTypes.add(newTagType);
-                refreshTagTypeComboBox();
-                showInfo("New tag type added: " + newTagType);
-            }
+    
+private void handleDefineNewTagType() {
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("Define New Tag Type");
+    dialog.setHeaderText("Add a new tag type");
+    dialog.setContentText("Enter new tag type:");
+    Optional<String> result = dialog.showAndWait();
+    if (result.isPresent()) {
+        String newTagType = result.get().trim();
+        if (!newTagType.isEmpty()) {
+            knownTagTypes.add(newTagType);
+            refreshTagTypeComboBox();
+            showInfo("New tag type added: " + newTagType);
+            SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
         }
     }
+}
+
 
     private void refreshTagTypeComboBox() {
         if (tagTypeComboBox != null) {

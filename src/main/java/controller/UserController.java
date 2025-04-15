@@ -98,10 +98,14 @@ public class UserController {
             // Update the table view if it exists
             if (albumTableView != null) {
                 albumTableView.getItems().add(newAlbum);
+                showError("An album with this name already exists.");
+                return;
             }
+            albumTableView.getItems().add(newAlbum);
 
-            albumTableView.refresh();
-            saveUserData();
+
+            SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
+
             showInfo("Album '" + albumName + "' created successfully.");
         }
     }

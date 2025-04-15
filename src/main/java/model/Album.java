@@ -16,11 +16,15 @@ public class Album implements Serializable {
     }
 
     public void addPhoto(Photo p) {
-
-        if (!photos.contains(p))
-            photos.add(p);
-
+    // Check if a photo with the same file path already exists
+    for (Photo existing : photos) {
+        if (existing.getFilepath().equals(p.getFilepath())) {
+            return; // Do not add duplicate photo
+        }
     }
+    photos.add(p);
+}
+
 
     public void deletePhoto(Photo p) {
 

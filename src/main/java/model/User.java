@@ -31,15 +31,19 @@ public class User implements Serializable {
      *
      * @param album the album to add
      */
-    public void addAlbum(Album album) {
-        // Optionally, check for duplicates here.
-        if (!albums.contains(album)) {
-            albums.add(album);
-            System.out.println("Album \"" + album.getName() + "\" added to user " + username + ".");
-        } else {
-            System.out.println("Album \"" + album.getName() + "\" already exists for user " + username + ".");
+    public boolean addAlbum(Album album) {
+        // Check if an album with the same name (ignoring case) already exists
+        for (Album existing : albums) {
+            if (existing.getName().equalsIgnoreCase(album.getName())) {
+                System.out.println("Album \"" + album.getName() + "\" already exists for user " + username + ".");
+                return false; // Album not added because it is a duplicate
+            }
         }
+        albums.add(album);
+        System.out.println("Album \"" + album.getName() + "\" added for user " + username + ".");
+        return true;
     }
+    
 
     /**
      * Removes an album from the user's album list.
