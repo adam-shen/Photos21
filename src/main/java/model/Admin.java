@@ -1,15 +1,24 @@
-package model;
-
-import java.util.ArrayList;
-
 /**
  * Admin is a special class that handles user management functions such as
  * listing users, creating a new user, and deleting an existing user.
  * This class is not a subclass of User since it represents an administrative
- * role.
+ * role within the Photos application.
  * 
- * @author YourName
+ * <p>
+ * This class interacts with the underlying persistence mechanism to save and
+ * load user data from disk. It is used by the AdminController to display and manage
+ * user accounts.
+ * </p>
+ * 
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
  */
+
+package model;
+
+import java.util.ArrayList;
+
 public class Admin {
     private ArrayList<User> users;
 

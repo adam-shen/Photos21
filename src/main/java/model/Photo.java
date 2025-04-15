@@ -1,3 +1,16 @@
+/**
+ * Represents a photo within an album in the Photos application.
+ *
+ * <p>
+ * A Photo object stores the file path to an image, a caption, the date the photo was originally taken,
+ * and a collection of associated tags. Additionally, it maintains a lastEdited timestamp that is updated
+ * whenever the photo’s caption or tags are modified. The file path is used to retrieve and display the image.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
 package model;
 
 import java.io.Serializable;

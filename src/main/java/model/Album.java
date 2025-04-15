@@ -1,3 +1,17 @@
+/**
+ * Represents an album that contains a collection of photos.
+ *
+ * <p>
+ * This class provides functionality to add, delete, and rename the album, as well as
+ * to retrieve information about the album such as the number of photos it contains and
+ * the date range during which the photos were taken. Duplicate photos (identified by 
+ * their file paths) are not added to the album.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
 package model;
 
 import java.io.Serializable;
@@ -16,15 +30,14 @@ public class Album implements Serializable {
     }
 
     public void addPhoto(Photo p) {
-    // Check if a photo with the same file path already exists
-    for (Photo existing : photos) {
-        if (existing.getFilepath().equals(p.getFilepath())) {
-            return; // Do not add duplicate photo
+        // Check if a photo with the same file path already exists
+        for (Photo existing : photos) {
+            if (existing.getFilepath().equals(p.getFilepath())) {
+                return; // Do not add duplicate photo
+            }
         }
+        photos.add(p);
     }
-    photos.add(p);
-}
-
 
     public void deletePhoto(Photo p) {
 

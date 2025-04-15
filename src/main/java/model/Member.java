@@ -6,7 +6,9 @@ package model;
  * 
  * (Additional member-specific methods can be added here.)
  * 
- * @author YourName
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
  */
 public class Member extends User {
 

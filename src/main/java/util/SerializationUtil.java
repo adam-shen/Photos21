@@ -1,3 +1,17 @@
+/**
+ * Utility class for handling serialization and deserialization of objects.
+ *
+ * <p>
+ * This class provides static methods to save any serializable object
+ * to a file and load it back from a file using Java's built-in serialization
+ * mechanism. The save method writes the object to the specified file path,
+ * while the load method reads and returns the deserialized object from the given file.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
 package util;
 
 import java.io.File;

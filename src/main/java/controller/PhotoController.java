@@ -1,3 +1,22 @@
+/**
+ * PhotoController handles the user interface interactions for managing and 
+ * displaying individual photos in the Photos application.
+ *
+ * <p>
+ * This controller is responsible for loading photo images, managing photo 
+ * metadata (such as captions and tags), and displaying the photo's capture date.
+ * The capture date is determined by checking the file’s last modified timestamp;
+ * if the photo has been edited, it can optionally display a separate “last edited”
+ * time. Additionally, the controller manages navigation operations (e.g., moving
+ * between photos, deleting or copying photos) and persists changes by saving
+ * updates via serialization.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
+
 package controller;
 
 import java.io.File;

@@ -8,7 +8,9 @@ import java.util.ArrayList;
  * It holds a username and a list of albums.
  * Implements Serializable for persistence.
  * 
- * @author YourName
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
  */
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -43,7 +45,6 @@ public class User implements Serializable {
         System.out.println("Album \"" + album.getName() + "\" added for user " + username + ".");
         return true;
     }
-    
 
     /**
      * Removes an album from the user's album list.

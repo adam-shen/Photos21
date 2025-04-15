@@ -1,3 +1,21 @@
+/**
+ * SearchController handles search functionality within the Photos application.
+ *
+ * <p>
+ * This controller provides methods for performing searches on photos based on date ranges and tag
+ * criteria. Users can search within a specific album or across all albums. Matching search results
+ * are displayed in a ListView, and a new album can be created from those results.
+ * </p>
+ *
+ * <p>
+ * The controller interacts with the current user's albums and photos, and updates the UI with the
+ * search results. It also handles navigation back to the main view.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
 package controller;
 
 import java.io.IOException;

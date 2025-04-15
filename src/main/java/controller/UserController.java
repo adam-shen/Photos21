@@ -1,3 +1,19 @@
+/**
+ * UserController manages the user interface for the regular user view of albums
+ * in the Photos application.
+ * 
+ * <p>
+ * This controller is responsible for displaying the current user's albums using a TableView.
+ * It configures the table columns to show album names, photo counts, and date ranges, and
+ * provides functionality for actions such as opening an album, creating, renaming, or deleting
+ * an album, as well as logging out and quitting the application.
+ * </p>
+ * 
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
+
 package controller;
 
 import java.io.IOException;

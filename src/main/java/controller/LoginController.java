@@ -1,3 +1,24 @@
+/**
+ * LoginController handles the user authentication for the Photos application.
+ * 
+ * <p>
+ * This controller validates user input from the login screen, distinguishes
+ * between regular, stock, and admin users, and loads or creates user data accordingly.
+ * For the stock user, it also ensures that a stock album is created and populated with
+ * images from the designated stock folder. The controller then navigates to the appropriate view
+ * based on the user type.
+ * </p>
+ * 
+ * <p>
+ * Session management is handled via a simple inner SessionManager class that tracks the current
+ * user and currently selected album.
+ * </p>
+ * 
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
+
 package controller;
 
 import java.io.File;

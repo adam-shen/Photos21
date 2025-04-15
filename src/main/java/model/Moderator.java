@@ -4,7 +4,9 @@ package model;
  * Moderator represents a user with extra privileges, such as moderating albums.
  * Inherits from User and adds moderation functionality.
  * 
- * @author YourName
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
  */
 public class Moderator extends User {
 

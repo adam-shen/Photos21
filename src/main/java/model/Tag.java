@@ -1,3 +1,16 @@
+/**
+ * Represents a tag associated with a photo.
+ *
+ * <p>
+ * A Tag is defined by a name and a corresponding value (for example, "location"="Paris" or "person"="Alice").
+ * Two Tag objects are considered equal if both their names and values match (ignoring case differences).
+ * This class implements Serializable to allow tags to be persisted as part of the photo data.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
 package model;
 
 import java.io.Serializable;

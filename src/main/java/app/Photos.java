@@ -1,3 +1,18 @@
+/**
+ * Photos is the main entry point for the Photos application.
+ *
+ * <p>
+ * This class extends the JavaFX Application class and is responsible for bootstrapping the application.
+ * It initially loads the login view from an FXML file and sets up the primary scene. The static method
+ * setRoot() is provided for seamless transitions between different views by loading the corresponding FXML files.
+ * The overall design of the application follows an MVC architecture, where FXML files define the view,
+ * controllers handle user interactions, and models represent application data.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
 package app;
 
 import java.io.IOException;

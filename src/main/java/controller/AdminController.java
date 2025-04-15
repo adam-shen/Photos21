@@ -1,3 +1,20 @@
+/**
+ * AdminController handles administrative tasks within the Photos application.
+ * It is responsible for managing user accounts by providing functionality
+ * to create, delete, and list users, as well as handling logout operations.
+ * This controller loads and updates user data from the "data/users" directory,
+ * and it interacts with the Admin model to maintain the collection of user accounts.
+ *
+ * <p>
+ * The UI components managed by this controller include a ListView for displaying
+ * usernames and dialogs for inputting new user names or confirming deletions.
+ * </p>
+ *
+ * @author Adam Student
+ * @author Neer Patel
+ * @version 1.0
+ */
+
 package controller;
 
 import java.io.File;
