@@ -48,7 +48,7 @@ public class Admin {
      * @param user the user to create
      */
     public void createUser(User user) {
-        // Optionally, check for duplicate users by username.
+
         if (!users.contains(user)) {
             users.add(user);
             System.out.println("User \"" + user.getUsername() + "\" created.");

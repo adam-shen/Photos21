@@ -74,7 +74,6 @@ public class PhotoController {
     @FXML
     private ComboBox<String> albumComboBox;
 
-    // (Optional: If photoListView is not used in this view, you can leave it.)
     @FXML
     private ListView<Photo> photoListView;
 

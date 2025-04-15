@@ -42,10 +42,6 @@ public class LoginController {
     @FXML
     private TextField usernameField;
 
-    // Optional password field if you decide to implement it
-    // @FXML
-    // private PasswordField passwordField;
-
     @FXML
     private void handleLogin(ActionEvent event) {
         String username = usernameField.getText().trim();
