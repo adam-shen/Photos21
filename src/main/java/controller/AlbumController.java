@@ -182,15 +182,20 @@ public class AlbumController {
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"));
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
+            // Check if the album already contains a photo with the same file path.
+            boolean duplicateFound = currentAlbum.getPhotos().stream()
+                    .anyMatch(photo -> photo.getFilepath().equalsIgnoreCase(selectedFile.getAbsolutePath()));
+            if (duplicateFound) {
+                showError("The selected photo already exists in this album.");
+                return;
+            }
             LocalDateTime dateTaken = LocalDateTime.now();
             Photo newPhoto = new Photo(selectedFile.getAbsolutePath(), "", dateTaken);
             currentAlbum.addPhoto(newPhoto);
             refreshPhotoGrid();
             saveUserData();
             showInfo("Photo added successfully.");
-
         }
-
     }
 
     @FXML

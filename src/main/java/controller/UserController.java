@@ -82,6 +82,7 @@ public class UserController {
 
     @FXML
     private void handleAddAlbum() {
+        // Create a dialog to prompt for the new album's name
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Add Album");
         dialog.setHeaderText("Create a new album");
@@ -91,19 +92,27 @@ public class UserController {
         if (result.isPresent() && !result.get().trim().isEmpty()) {
             String albumName = result.get().trim();
 
-            User currentUser = getCurrentUser();
+            // Retrieve the current user (ensure this method works for your project)
+            User currentUser = getCurrentUser(); // Alternatively, use SessionManager.getCurrentUser()
+
+            // Check if an album with the same name already exists
+            for (Album album : currentUser.getAlbums()) {
+                if (album.getName().equalsIgnoreCase(albumName)) {
+                    showError("An album with this name already exists.");
+                    return;
+                }
+            }
+
+            // No duplicate found; create the album
             Album newAlbum = new Album(albumName);
             currentUser.addAlbum(newAlbum);
 
-            // Update the table view if it exists
+            // If you're using a TableView (or ListView) to display albums, update it
             if (albumTableView != null) {
                 albumTableView.getItems().add(newAlbum);
-                showError("An album with this name already exists.");
-                return;
             }
-            albumTableView.getItems().add(newAlbum);
 
-
+            // Save the updated user data to disk
             SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
 
             showInfo("Album '" + albumName + "' created successfully.");
@@ -181,12 +190,12 @@ public class UserController {
     }
 
     @FXML
-private void openSearchView() {
-    try {
-        App.setRoot("search_view");
-    } catch (IOException e) {
-        e.printStackTrace();
+    private void openSearchView() {
+        try {
+            App.setRoot("search_view");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 
 }
