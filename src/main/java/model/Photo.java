@@ -13,6 +13,7 @@ public class Photo implements Serializable {
     private String caption;
     private final LocalDateTime dateTaken;
     private Set<Tag> tags;
+    private LocalDateTime lastEdited;
 
     public Photo(String filepath, String caption, LocalDateTime dateTaken) {
         this.filepath = filepath;
@@ -27,11 +28,13 @@ public class Photo implements Serializable {
             tags.removeIf(existingTag -> "location".equalsIgnoreCase(existingTag.getName())); // Lamda expression
         }
         tags.add(tag); // Add the tag (Set ensures no duplicates)
+        this.lastEdited = LocalDateTime.now();
     }
 
     public void removeTag(Tag tag) {
         if (tags.contains(tag))
             tags.remove(tag);
+        this.lastEdited = LocalDateTime.now();
     }
 
     public LocalDateTime getDateTaken() {
@@ -48,10 +51,15 @@ public class Photo implements Serializable {
 
     public void setCaption(String caption) {
         this.caption = caption;
+        this.lastEdited = LocalDateTime.now();
     }
 
     public Set<Tag> getTags() {
         return this.tags;
+    }
+
+    public LocalDateTime getLastEdited() {
+        return lastEdited;
     }
 
     @Override

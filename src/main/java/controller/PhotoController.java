@@ -7,14 +7,15 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import app.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Album;
 import model.Photo;
 import model.Tag;
@@ -96,12 +98,10 @@ public class PhotoController {
 
     @FXML
     public void handleBack(ActionEvent event) {
-        try {
-            App.setRoot("album_details"); // Redirect to the album details view
-        } catch (IOException e) {
-            e.printStackTrace();
-            showError("Failed to return to album details view.");
-        }
+        // Get the current stage (window) from the event source (the button) and close
+        // it.
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -164,84 +164,81 @@ public class PhotoController {
     }
 
     @FXML
-   
-private void handleAddTag() {
-    if (selectedPhoto == null) {
-        showError("No photo selected.");
-        return;
-    }
-    String tagType = tagTypeComboBox.getValue();
-    String tagValue = tagValueField.getText().trim();
 
-    if (tagType == null || tagType.isEmpty()) {
-        showError("Please select a tag type.");
-        return;
-    }
-    if (tagValue.isEmpty()) {
-        showError("Tag value cannot be empty.");
-        return;
-    }
+    private void handleAddTag() {
+        if (selectedPhoto == null) {
+            showError("No photo selected.");
+            return;
+        }
+        String tagType = tagTypeComboBox.getValue();
+        String tagValue = tagValueField.getText().trim();
 
-    // Persist the new tag type in your session's set of known types.
-    knownTagTypes.add(tagType);
-    refreshTagTypeComboBox();
+        if (tagType == null || tagType.isEmpty()) {
+            showError("Please select a tag type.");
+            return;
+        }
+        if (tagValue.isEmpty()) {
+            showError("Tag value cannot be empty.");
+            return;
+        }
 
-    Tag newTag = new Tag(tagType, tagValue);
-    selectedPhoto.addTag(newTag);
+        // Persist the new tag type in your session's set of known types.
+        knownTagTypes.add(tagType);
+        refreshTagTypeComboBox();
 
-    refreshTagList();
-    tagValueField.clear();
-    showInfo("Tag added: " + tagType + "=" + tagValue);
-    
-    // Save the updated user object so that tag changes are persisted.
-    SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
-}
+        Tag newTag = new Tag(tagType, tagValue);
+        selectedPhoto.addTag(newTag);
 
-
-    @FXML
-private void handleDeleteTag() {
-    if (selectedPhoto == null) {
-        showError("No photo selected.");
-        return;
-    }
-    String selectedTag = tagListView.getSelectionModel().getSelectedItem();
-    if (selectedTag == null) {
-        showError("No tag selected.");
-        return;
-    }
-    // Expected format: "name=value"
-    String[] parts = selectedTag.split("=");
-    if (parts.length == 2) {
-        Tag tagToRemove = new Tag(parts[0].trim(), parts[1].trim());
-        selectedPhoto.removeTag(tagToRemove);
         refreshTagList();
-        showInfo("Tag removed: " + selectedTag);
-        
-        // Save the updated user object so that removal is persisted.
+        tagValueField.clear();
+        showInfo("Tag added: " + tagType + "=" + tagValue);
+
+        // Save the updated user object so that tag changes are persisted.
         SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
     }
-}
-
 
     @FXML
-    
-private void handleDefineNewTagType() {
-    TextInputDialog dialog = new TextInputDialog();
-    dialog.setTitle("Define New Tag Type");
-    dialog.setHeaderText("Add a new tag type");
-    dialog.setContentText("Enter new tag type:");
-    Optional<String> result = dialog.showAndWait();
-    if (result.isPresent()) {
-        String newTagType = result.get().trim();
-        if (!newTagType.isEmpty()) {
-            knownTagTypes.add(newTagType);
-            refreshTagTypeComboBox();
-            showInfo("New tag type added: " + newTagType);
+    private void handleDeleteTag() {
+        if (selectedPhoto == null) {
+            showError("No photo selected.");
+            return;
+        }
+        String selectedTag = tagListView.getSelectionModel().getSelectedItem();
+        if (selectedTag == null) {
+            showError("No tag selected.");
+            return;
+        }
+        // Expected format: "name=value"
+        String[] parts = selectedTag.split("=");
+        if (parts.length == 2) {
+            Tag tagToRemove = new Tag(parts[0].trim(), parts[1].trim());
+            selectedPhoto.removeTag(tagToRemove);
+            refreshTagList();
+            showInfo("Tag removed: " + selectedTag);
+
+            // Save the updated user object so that removal is persisted.
             SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
         }
     }
-}
 
+    @FXML
+
+    private void handleDefineNewTagType() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Define New Tag Type");
+        dialog.setHeaderText("Add a new tag type");
+        dialog.setContentText("Enter new tag type:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            String newTagType = result.get().trim();
+            if (!newTagType.isEmpty()) {
+                knownTagTypes.add(newTagType);
+                refreshTagTypeComboBox();
+                showInfo("New tag type added: " + newTagType);
+                SerializationUtil.save(currentUser, "data/users/" + currentUser.getUsername() + ".dat");
+            }
+        }
+    }
 
     private void refreshTagTypeComboBox() {
         if (tagTypeComboBox != null) {
@@ -342,10 +339,20 @@ private void handleDefineNewTagType() {
             }
             photoCaptionField.setText(photo.getCaption());
 
-            // Attempt to get the file's last modified date and display it.
-            File file = new File(photo.getFilepath());
-            LocalDateTime lastModified = getLastModifiedDate(file, photo.getDateTaken());
-            photoDateLabel.setText("Date Taken: " + lastModified);
+            // Determine which date to display: if the photo was edited, use lastEdited;
+            // otherwise, use the file's last modified date.
+            LocalDateTime displayDate;
+            if (photo.getLastEdited() != null) {
+                displayDate = photo.getLastEdited();
+            } else {
+                File file = new File(photo.getFilepath());
+                displayDate = getLastModifiedDate(file, photo.getDateTaken());
+            }
+
+            // Format the date to be cleaner
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = displayDate.format(formatter);
+            photoDateLabel.setText("Date Taken: " + formattedDate);
 
             refreshTagList();
         }

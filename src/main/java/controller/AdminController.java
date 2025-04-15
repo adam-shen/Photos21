@@ -146,6 +146,11 @@ public class AdminController {
     }
 
     private void refreshUserList() {
+        // Reinitialize the admin model so that stale data is cleared.
+        adminModel = new Admin();
+        // Reload users from disk (which will only load files that still exist)
+        loadUsers();
+        // Clear the observable list and repopulate it
         usernames.clear();
         ArrayList<User> users = adminModel.listUsers();
         for (User user : users) {

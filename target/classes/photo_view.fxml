@@ -56,12 +56,6 @@
             <!-- Button to define a new tag type -->
             <Button text="Define New Tag Type" onAction="#handleDefineNewTagType" />
 
-            <!-- Optional album selection for copy/move if you wish -->
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="Select Album:"/>
-                <ComboBox fx:id="albumComboBox" promptText="Destination" prefWidth="150"/>
-            </HBox>
-
             <!-- Navigation for next/previous photo -->
             <HBox spacing="20" alignment="CENTER">
                 <Button text="Previous" onAction="#handlePreviousPhoto" />

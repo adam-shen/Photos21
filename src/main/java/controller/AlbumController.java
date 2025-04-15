@@ -188,10 +188,9 @@ public class AlbumController {
             refreshPhotoGrid();
             saveUserData();
             showInfo("Photo added successfully.");
-            
+
         }
 
-        
     }
 
     @FXML
