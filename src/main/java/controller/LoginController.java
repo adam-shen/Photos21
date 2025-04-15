@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import app.App;
+import app.Photos;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -36,7 +36,7 @@ public class LoginController {
         if (username.equalsIgnoreCase("admin")) {
             // For admin user, navigate to admin view
             try {
-                App.setRoot("admin");
+                Photos.setRoot("admin");
             } catch (IOException e) {
                 showError("Failed to load the admin view.");
                 e.printStackTrace();
@@ -91,7 +91,7 @@ public class LoginController {
                 // Set the current user (in session management) and navigate to the primary
                 // view.
                 SessionManager.setCurrentUser(stockUser);
-                App.setRoot("primary");
+                Photos.setRoot("primary");
             } catch (IOException e) {
                 showError("Failed to load the stock user view.");
                 e.printStackTrace();
@@ -108,7 +108,7 @@ public class LoginController {
             try {
                 // Set the current user in session management.
                 SessionManager.setCurrentUser(user);
-                App.setRoot("primary");
+                Photos.setRoot("primary");
             } catch (IOException e) {
                 showError("Failed to load the primary view.");
                 e.printStackTrace();

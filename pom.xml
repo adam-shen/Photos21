@@ -51,7 +51,7 @@
                 </executions>
                 <configuration>
                     <!-- Update the mainClass to match your current structure -->
-                    <mainClass>app.App</mainClass>
+                    <mainClass>app.Photos</mainClass>
                 </configuration>
             </plugin>
         </plugins>

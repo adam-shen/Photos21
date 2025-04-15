@@ -3,7 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.Optional;
 
-import app.App;
+import app.Photos;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -46,7 +46,7 @@ public class UserController {
     private void handleLogout() {
         saveUserData();
         try {
-            App.setRoot("login"); // Redirect to the login screen
+            Photos.setRoot("login"); // Redirect to the login screen
         } catch (IOException e) {
             showError("Failed to load the login screen.");
             e.printStackTrace();
@@ -73,7 +73,7 @@ public class UserController {
 
         try {
             // Switch to the album details view (album_details.fxml)
-            App.setRoot("album_details");
+            Photos.setRoot("album_details");
         } catch (IOException e) {
             showError("Failed to load the album details view.");
             e.printStackTrace();
@@ -192,7 +192,7 @@ public class UserController {
     @FXML
     private void openSearchView() {
         try {
-            App.setRoot("search_view");
+            Photos.setRoot("search_view");
         } catch (IOException e) {
             e.printStackTrace();
         }

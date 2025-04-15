@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import app.App;
+import app.Photos;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -109,7 +109,7 @@ public class AdminController {
     @FXML
     private void handleLogout() {
         try {
-            App.setRoot("login");
+            Photos.setRoot("login");
         } catch (IOException e) {
             showError("Failed to return to login screen.");
             e.printStackTrace();

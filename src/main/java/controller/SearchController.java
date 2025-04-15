@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.App;
+import app.Photos;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,10 +36,10 @@ public class SearchController {
 
     @FXML
     private ComboBox<String> albumComboBox;
-    
+
     // Maintains search results
     private List<Photo> searchResults = new ArrayList<>();
-    
+
     private User currentUser;
 
     @FXML
@@ -53,7 +53,7 @@ public class SearchController {
         // Set a custom cell factory (if desired) for displaying image thumbnails, etc.
         searchResultsListView.setCellFactory(listView -> new javafx.scene.control.ListCell<Photo>() {
             private javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView();
-            
+
             @Override
             protected void updateItem(Photo photo, boolean empty) {
                 super.updateItem(photo, empty);
@@ -63,8 +63,8 @@ public class SearchController {
                 } else {
                     setText(photo.getCaption());
                     try {
-                        javafx.scene.image.Image thumbnail = new javafx.scene.image.Image("file:" + photo.getFilepath(), 
-                                                  60, 60, true, true);
+                        javafx.scene.image.Image thumbnail = new javafx.scene.image.Image("file:" + photo.getFilepath(),
+                                60, 60, true, true);
                         imageView.setImage(thumbnail);
                         setGraphic(imageView);
                     } catch (Exception e) {
@@ -119,7 +119,7 @@ public class SearchController {
             return;
         }
         searchResults.clear();
-        
+
         String operator = null;
         String[] parts = null;
         if (query.contains(" AND ")) {
@@ -131,7 +131,7 @@ public class SearchController {
         } else {
             parts = new String[] { query };
         }
-        
+
         List<Tag> tagConditions = new ArrayList<>();
         for (String part : parts) {
             String[] kv = part.split("=");
@@ -143,7 +143,7 @@ public class SearchController {
             String value = kv[1].trim();
             tagConditions.add(new Tag(key, value));
         }
-        
+
         List<Photo> photosToSearch = new ArrayList<>();
         if (albumComboBox.getValue() != null) {
             for (Album album : currentUser.getAlbums()) {
@@ -157,7 +157,7 @@ public class SearchController {
                 photosToSearch.addAll(album.getPhotos());
             }
         }
-        
+
         for (Photo photo : photosToSearch) {
             boolean matches = false;
             if (operator == null) {
@@ -207,7 +207,7 @@ public class SearchController {
     @FXML
     private void handleBack() {
         try {
-            App.setRoot("primary");  // Change "primary" if your main album view is named differently
+            Photos.setRoot("primary"); // Change "primary" if your main album view is named differently
         } catch (IOException e) {
             e.printStackTrace();
             showError("Unable to return to the main album list.");

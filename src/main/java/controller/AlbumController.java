@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import app.App;
+import app.Photos;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -160,7 +160,7 @@ public class AlbumController {
             }
             SessionManager.setCurrentAlbum(selectedAlbum);
             try {
-                App.setRoot("album_details");
+                Photos.setRoot("album_details");
             } catch (IOException e) {
                 showError("Failed to open album details view.");
                 e.printStackTrace();
@@ -305,7 +305,7 @@ public class AlbumController {
     @FXML
     private void handleBack() {
         try {
-            App.setRoot("primary");
+            Photos.setRoot("primary");
         } catch (IOException e) {
             showError("Failed to return to primary view.");
             e.printStackTrace();
